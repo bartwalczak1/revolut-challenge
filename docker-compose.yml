@@ -5,3 +5,8 @@ services:
     build: .
     ports:
       - "5000:5000"
+    # environment:
+    #   - PORT_APP=5000
+    #   - WORKERS=4
+    #   - THREADS=50
+    #   - PROTOCOL=http

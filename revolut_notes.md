@@ -1,27 +1,23 @@
-    SELECT rate
-    FROM exchange_rates s1
-    WHERE ts = (SELECT MAX(ts) FROM exchange_rates) and to_currency='GBP';
+# SQL challenge
+
+## Write down a query that gives us a breakdown of spend in GBP by each user. Use the exchange rate with the largest timestamp. 
+
+SELECT transactions.user_id, SUM(transactions.amount * exchange_rates.rate) as amount
+FROM transactions, exchange_rates
+WHERE exchange_rates.to_currency = 'GBP' and exchange_rates.ts = (SELECT MAX(ts) FROM exchange_rates)
+GROUP BY transactions.user_id
+ORDER BY transactions.user_id;
 
 
-highest exchange rate 1.62
+## (If you consider yourself senior) Write down the same query, but this time, use the latest exchange rate smaller or equal than the transaction timestamp. Solution should have the two columns: user_id, total_spent_gbp, ordered by user_id
 
-
-
-
-*****************
-
-select t.ts, t.user_id, t.amount * e.rate as conv_amount
-from   transactions t
-join lateral (select *
-              from   exchange_rates er
-              where  t.currency = er.from_currency
-              and    er.ts <= t.ts
-              order by ts desc
-              limit 1) e on true;
-
-****************
-
-SELECT transactions.user_id, transactions.amount * exchange_rates.rate as conv_amount
-FROM transactions
-INNER JOIN exchange_rates ON exchange_rates.from_currency=transactions.currency
-WHERE exchange_rates.to_currency = 'GBP' and exchange_rates.ts = (SELECT MAX(ts) FROM exchange_rates);
+SELECT t.user_id, SUM(t.amount * e.rate) as total_spent_gbp
+FROM transactions t
+JOIN lateral (SELECT *
+          	FROM exchange_rates er
+          	WHERE t.currency = er.from_currency
+          	and er.ts <= t.ts
+          	ORDER BY ts DESC
+          	LIMIT 1) e ON true
+GROUP BY t.user_id
+ORDER BY t.user_id;

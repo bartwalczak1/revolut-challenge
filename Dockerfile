@@ -18,5 +18,5 @@ CMD python api.py
 #    --workers $WORKERS \
 #    --gevent $ASYNC_CORES \
 #    --protocol $PROTOCOL \
-#    --socket 0.0.0.0:3000 \
-#   --module patched:app
+#    --socket 0.0.0.0:$PORT_APP \
+#    --module patched:app
