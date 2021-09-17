@@ -34,17 +34,36 @@ docker-compose up --build
 
 ### Debug
 ```
+pip install virtualenv
 virtualenv venv
 source venv/bin/activate
 python -m pip install -r requirements.txt
 python app/api.py
 ```
 
-## Test
+### Test
 ```
+pip install virtualenv
 virtualenv venv
 source venv/bin/activate
 python -m pip install -r requirements.txt
 python -m pytest -vvv /test
 ```
 
+
+### Coverage
+```
+---------- coverage: platform linux, python 3.6.15-final-0 -----------
+Name                               Stmts   Miss  Cover
+------------------------------------------------------
+app/__init__.py                        0      0   100%
+app/api.py                            18      2    89%
+app/authentication/__init__.py         0      0   100%
+app/authentication/auth.py             8      0   100%
+app/parser/__init__.py                 0      0   100%
+app/parser/parser.py                  22      0   100%
+app/resources/__init__.py              0      0   100%
+app/resources/parser_resource.py      19      0   100%
+------------------------------------------------------
+TOTAL                                 67      2    97%
+````
